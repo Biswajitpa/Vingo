@@ -26,7 +26,7 @@ import { useEffect } from 'react'
 import { io } from 'socket.io-client'
 import { setSocket } from './socketManager'
 
-export const serverUrl = "http://localhost:8000"
+export const serverUrl = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 // ── Pages where footer should NOT show ───────────────────────────────────────
 const HIDE_FOOTER_ON = ['/signin', '/signup', '/forgot-password']
@@ -55,7 +55,6 @@ function AppContent() {
         <Route path='/shop/:shopId' element={userData ? <Shop /> : <Navigate to={"/signin"} />} />
       </Routes>
 
-      {/* ✅ Footer shows on all pages except signin/signup/forgot-password */}
       {showFooter && <Footer />}
     </>
   )
