@@ -74,7 +74,7 @@ function DeliveryBoy() {
 
   useEffect(() => {
     const socket = getSocket()
-    if (!socket || userData?.role !== "deliveryBoy") return
+    if (!socket || userData?.role !== "DeliveryBoy") return
     let watchId
     if (navigator.geolocation) {
       watchId = navigator.geolocation.watchPosition(

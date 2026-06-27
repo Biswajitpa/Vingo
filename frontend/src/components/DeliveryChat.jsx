@@ -146,14 +146,14 @@ function DeliveryChat({ orderId, deliveryBoyId, deliveryBoyName, deliveryBoyMobi
             <div className="flex items-center justify-between px-3 py-2.5 bg-[#7F77DD] shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-full bg-[#534AB7] flex items-center justify-center text-lg shrink-0">
-                  {userData?.role === 'deliveryBoy' ? '👤' : '🛵'}
+                  {userData?.role === 'DeliveryBoy' ? '👤' : '🛵'}
                 </div>
                 <div className="min-w-0">
                   <p className="text-white font-bold text-sm leading-tight truncate max-w-[140px]">
                     {deliveryBoyName || 'Delivery Boy'}
                   </p>
                   <p className="text-purple-200 text-[11px]">
-                    {isTyping ? '✍️ typing...' : userData?.role === 'deliveryBoy' ? '👤 Customer' : '🛵 On the way'}
+                    {isTyping ? '✍️ typing...' : userData?.role === 'DeliveryBoy' ? '👤 Customer' : '🛵 On the way'}
                   </p>
                 </div>
               </div>
@@ -219,11 +219,11 @@ function DeliveryChat({ orderId, deliveryBoyId, deliveryBoyName, deliveryBoyMobi
               {messages.length === 0 && (
                 <div className="flex flex-col items-center justify-center h-full gap-3 text-center px-4">
                   <div className="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center text-3xl">
-                    {userData?.role === 'deliveryBoy' ? '👤' : '🛵'}
+                    {userData?.role === 'DeliveryBoy' ? '👤' : '🛵'}
                   </div>
                   <div>
                     <p className="text-gray-700 font-semibold text-sm">
-                      {userData?.role === 'deliveryBoy' ? 'Chat with Customer' : 'Chat with your Rider'}
+                      {userData?.role === 'DeliveryBoy' ? 'Chat with Customer' : 'Chat with your Rider'}
                     </p>
                     <p className="text-gray-400 text-xs mt-1">Messages are only visible during delivery</p>
                   </div>
@@ -240,8 +240,8 @@ function DeliveryChat({ orderId, deliveryBoyId, deliveryBoyName, deliveryBoyMobi
 
               {messages.map((msg, i) => {
                 const isSelf = msg.self || msg.senderId === userData?._id
-                const senderAvatar = msg.senderRole === 'deliveryBoy' ? '🛵' : '👤'
-                const selfAvatar = userData?.role === 'deliveryBoy' ? '🛵' : '👤'
+                const senderAvatar = msg.senderRole === 'DeliveryBoy' ? '🛵' : '👤'
+                const selfAvatar = userData?.role === 'DeliveryBoy' ? '🛵' : '👤'
                 const prevMsg = messages[i - 1]
                 const prevIsSelf = prevMsg && (prevMsg.self || prevMsg.senderId === userData?._id)
                 const hideAvatar = isSelf ? (prevIsSelf === true) : (prevIsSelf === false)

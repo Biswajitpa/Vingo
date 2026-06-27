@@ -130,7 +130,7 @@ function SignUp() {
   const roles = [
     { id: "user",        label: "Customer",  icon: <FaUserAlt /> },
     { id: "owner",       label: "Owner",     icon: <FaStore /> },
-    { id: "deliveryBoy", label: "Delivery",  icon: <FaMotorcycle /> },
+    { id: "DeliveryBoy", label: "Delivery",  icon: <FaMotorcycle /> },
   ];
 
   const fields = [
