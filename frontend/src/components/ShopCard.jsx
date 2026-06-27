@@ -8,22 +8,18 @@ function ShopCard({ name, image, onClick }) {
       className='w-[200px] shrink-0 cursor-pointer group'
       onClick={onClick}
     >
-      {/* Image container */}
       <div className='w-full h-[130px] rounded-2xl overflow-hidden relative'>
         <img
-          src={image}
+          src={image || "/placeholder.png"}
           alt={name}
           className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+          onError={(e) => { e.target.src = "/placeholder.png" }}
         />
-        {/* Bottom gradient overlay */}
         <div className='absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/60 to-transparent' />
-        {/* Price tag style label */}
         <div className='absolute bottom-2 left-2 bg-white text-gray-800 text-[10px] font-bold px-2 py-0.5 rounded-md shadow'>
           FREE DELIVERY
         </div>
       </div>
-
-      {/* Info */}
       <div className='mt-2 px-1'>
         <h2 className='font-bold text-gray-900 text-sm truncate'>{name}</h2>
         <div className='flex items-center gap-1 mt-0.5'>
