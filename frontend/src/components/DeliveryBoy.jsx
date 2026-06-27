@@ -74,7 +74,10 @@ function DeliveryBoy() {
 
   useEffect(() => {
     const socket = getSocket()
-    if (!socket || userData?.role !== "DeliveryBoy") return
+    // ✅ FIX: role must match the schema enum exactly ("deliveryBoy", lowercase d).
+    // Previously compared against "DeliveryBoy", so this effect always bailed out
+    // and GPS tracking / location emits never ran for delivery boys.
+    if (!socket || userData?.role !== "deliveryBoy") return
     let watchId
     if (navigator.geolocation) {
       watchId = navigator.geolocation.watchPosition(
