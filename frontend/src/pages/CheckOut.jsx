@@ -6,6 +6,10 @@ import { IoLocationSharp } from "react-icons/io5";
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import "leaflet/dist/leaflet.css"
+import L from "leaflet";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { setAddress, setLocation } from '../redux/mapSlice';
 import { MdDeliveryDining } from "react-icons/md";
 import { FaCreditCard } from "react-icons/fa";
@@ -14,6 +18,20 @@ import { FaMobileScreenButton } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { serverUrl } from '../App';
 import { addMyOrder, setTotalAmount } from '../redux/userSlice';
+
+// ✅ FIX: Vite doesn't resolve Leaflet's default marker icon paths (they're
+// referenced as relative URLs inside leaflet's own CSS/JS), so the marker
+// image 404s and shows as a broken image icon. Re-pointing Leaflet's default
+// icon at the bundler-resolved imports above fixes it everywhere Marker is used.
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
 function RecenterMap({ location }) {
   if (location.lat && location.lon) {
     const map = useMap()
