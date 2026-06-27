@@ -28,13 +28,11 @@ import { setSocket } from './socketManager'
 
 export const serverUrl = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
-// ── Pages where footer should NOT show ───────────────────────────────────────
 const HIDE_FOOTER_ON = ['/signin', '/signup', '/forgot-password']
 
 function AppContent() {
   const { userData } = useSelector(state => state.user)
   const location = useLocation()
-
   const showFooter = !HIDE_FOOTER_ON.includes(location.pathname)
 
   return (
@@ -54,7 +52,6 @@ function AppContent() {
         <Route path='/track-order/:orderId' element={userData ? <TrackOrderPage /> : <Navigate to={"/signin"} />} />
         <Route path='/shop/:shopId' element={userData ? <Shop /> : <Navigate to={"/signin"} />} />
       </Routes>
-
       {showFooter && <Footer />}
     </>
   )
@@ -72,13 +69,13 @@ function App() {
   useGetMyOrders()
 
   useEffect(() => {
+    if (!userData) return  // ✅ only connect socket when logged in
+
     const socketInstance = io(serverUrl, { withCredentials: true })
     setSocket(socketInstance)
 
     socketInstance.on('connect', () => {
-      if (userData) {
-        socketInstance.emit('identity', { userId: userData._id })
-      }
+      socketInstance.emit('identity', { userId: userData._id })
     })
 
     return () => {
