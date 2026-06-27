@@ -94,8 +94,17 @@ export const sendOtp = async (req, res) => {
         user.otpExpires = Date.now() + 5 * 60 * 1000
         user.isOtpVerified = false
         await user.save()
-        await sendOtpMail(email, otp)
-        return res.status(200).json({ message: "otp sent successfully" })
+
+        // ✅ FIX: respond immediately instead of waiting on the email send,
+        // same pattern as sendDeliveryOtp. The OTP is already saved on the
+        // user at this point, so the frontend doesn't need to wait on the
+        // mail provider before showing the OTP entry screen.
+        res.status(200).json({ message: "otp sent successfully" })
+
+        sendOtpMail(email, otp).catch(err => {
+            console.log("reset otp email failed:", err)
+        })
+
     } catch (error) {
         return res.status(500).json({ message: `send otp error: ${error.message}` })
     }
