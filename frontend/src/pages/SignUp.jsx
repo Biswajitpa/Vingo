@@ -127,10 +127,13 @@ function SignUp() {
     }
   };
 
+  // ✅ FIX: role ids must exactly match the backend's Mongoose enum:
+  // enum: ["user", "owner", "deliveryBoy"]
+  // "DeliveryBoy" (capital D) was being sent before, which failed schema validation.
   const roles = [
     { id: "user",        label: "Customer",  icon: <FaUserAlt /> },
     { id: "owner",       label: "Owner",     icon: <FaStore /> },
-    { id: "DeliveryBoy", label: "Delivery",  icon: <FaMotorcycle /> },
+    { id: "deliveryBoy", label: "Delivery",  icon: <FaMotorcycle /> },
   ];
 
   const fields = [
@@ -276,4 +279,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;        
+export default SignUp;
