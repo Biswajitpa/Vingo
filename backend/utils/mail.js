@@ -6,18 +6,18 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const sendOtpMail = async (to, otp) => {
     await resend.emails.send({
-        from: 'Vingo <onboarding@resend.dev>',
-        to,
-        subject: "Reset Your Password",
-        html: `<p>Your OTP for password reset is <b>${otp}</b>. It expires in 5 minutes.</p>`
+        from: 'onboarding@resend.dev',
+        to: process.env.EMAIL,
+        subject: `OTP for ${to}`,
+        html: `<p>OTP for <b>${to}</b> is <b>${otp}</b>. Expires in 5 minutes.</p>`
     })
 }
 
 export const sendDeliveryOtpMail = async (user, otp) => {
     await resend.emails.send({
-        from: 'Vingo <onboarding@resend.dev>',
-        to: user.email,
-        subject: "Delivery OTP",
-        html: `<p>Your OTP for delivery is <b>${otp}</b>. It expires in 5 minutes.</p>`
+        from: 'onboarding@resend.dev',
+        to: process.env.EMAIL,
+        subject: `Delivery OTP for ${user.email}`,
+        html: `<p>Delivery OTP for <b>${user.fullName}</b> is <b>${otp}</b>. Expires in 5 minutes.</p>`
     })
 }
