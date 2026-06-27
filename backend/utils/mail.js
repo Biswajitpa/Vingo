@@ -16,11 +16,11 @@ const transporter = nodemailer.createTransport({
   socketTimeout: 60000,
 });
 
-transporter.verify((error) => {
+transporter.verify((error, success) => {
   if (error) {
     console.error("❌ Mail Configuration Error:", error);
   } else {
-    console.log("✅ Mail Server is Ready");
+    console.log("✅ Gmail SMTP Connected");
   }
 });
 
@@ -28,13 +28,15 @@ export const sendOtpMail = async (to, otp) => {
   try {
     const info = await transporter.sendMail({
       from: `"Vingo" <${process.env.EMAIL}>`,
-      to,
+      to: to,
       subject: "Reset Your Password",
       html: `
-        <h2>Vingo Password Reset</h2>
-        <p>Your OTP is:</p>
-        <h1 style="color:#ff5722;">${otp}</h1>
-        <p>This OTP will expire in <b>5 minutes</b>.</p>
+        <div style="font-family:Arial,sans-serif">
+          <h2>Vingo Password Reset</h2>
+          <p>Your OTP is:</p>
+          <h1 style="color:#ff5722;">${otp}</h1>
+          <p>This OTP is valid for <b>5 minutes</b>.</p>
+        </div>
       `,
     });
 
@@ -53,10 +55,12 @@ export const sendDeliveryOtpMail = async (user, otp) => {
       to: user.email,
       subject: "Delivery OTP",
       html: `
-        <h2>Vingo Delivery Verification</h2>
-        <p>Your Delivery OTP is:</p>
-        <h1 style="color:#28a745;">${otp}</h1>
-        <p>This OTP will expire in <b>5 minutes</b>.</p>
+        <div style="font-family:Arial,sans-serif">
+          <h2>Vingo Delivery OTP</h2>
+          <p>Your Delivery OTP is:</p>
+          <h1 style="color:#28a745;">${otp}</h1>
+          <p>This OTP is valid for <b>5 minutes</b>.</p>
+        </div>
       `,
     });
 
