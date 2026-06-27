@@ -453,8 +453,19 @@ export const sendDeliveryOtp = async (req, res) => {
         shopOrder.deliveryOtp = otp
         shopOrder.otpExpires = Date.now() + 5 * 60 * 1000
         await order.save()
-        await sendDeliveryOtpMail(order.user, otp)
-        return res.status(200).json({ message: `Otp sent Successfuly to ${order?.user?.fullName}` })
+
+        // ✅ FIX: respond to the frontend immediately instead of waiting on the
+        // Gmail SMTP round-trip. Previously `await sendDeliveryOtpMail(...)` ran
+        // BEFORE the response was sent, so "Mark As Delivered" sat spinning for
+        // as long as the email took to send (often several seconds, longer on
+        // Render's free tier). The OTP is already saved on the order at this
+        // point, so it's safe to respond now and send the email in the background.
+        res.status(200).json({ message: `Otp sent Successfuly to ${order?.user?.fullName}` })
+
+        sendDeliveryOtpMail(order.user, otp).catch(err => {
+            console.log("delivery otp email failed:", err)
+        })
+
     } catch (error) {
         return res.status(500).json({ message: `delivery otp error ${error}` })
     }
